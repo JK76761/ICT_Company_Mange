@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,11 @@ const links = [
   { href: "/users", label: "Users", roles: ["ADMIN", "STAFF"] as const },
   { href: "/logs", label: "Activity Logs", roles: ["ADMIN", "STAFF"] as const },
   { href: "/runbook", label: "Security Runbook", roles: ["ADMIN", "STAFF"] as const }
-];
+] as const satisfies ReadonlyArray<{
+  href: Route;
+  label: string;
+  roles: readonly SessionUser["role"][];
+}>;
 
 export function ShellNav({ session }: ShellNavProps) {
   const pathname = usePathname();
@@ -75,4 +80,3 @@ export function ShellNav({ session }: ShellNavProps) {
     </aside>
   );
 }
-
