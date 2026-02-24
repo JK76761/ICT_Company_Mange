@@ -1,3 +1,9 @@
+import type {
+  ActivityLog as PrismaActivityLog,
+  PrismaClient,
+  User as PrismaUser
+} from "@prisma/client";
+
 import { getPrismaClient } from "@/lib/prisma";
 import type {
   ActivityAction,
@@ -15,7 +21,7 @@ declare global {
   var __rims_prisma_query_warned__: boolean | undefined;
 }
 
-function toPublicUser(record: any): PublicUser {
+function toPublicUser(record: PrismaUser): PublicUser {
   return {
     id: record.id,
     username: record.username,
@@ -27,7 +33,7 @@ function toPublicUser(record: any): PublicUser {
   };
 }
 
-function toLog(record: any): ActivityLogEntry {
+function toLog(record: PrismaActivityLog): ActivityLogEntry {
   return {
     id: record.id,
     user: record.user,
@@ -38,7 +44,7 @@ function toLog(record: any): ActivityLogEntry {
   };
 }
 
-async function getClientOrNull(): Promise<any | null> {
+async function getClientOrNull(): Promise<PrismaClient | null> {
   return getPrismaClient();
 }
 
@@ -54,7 +60,7 @@ function warnPrismaQueryFallback(error: unknown): void {
   );
 }
 
-async function ensureSeeded(prisma: any): Promise<void> {
+async function ensureSeeded(prisma: PrismaClient): Promise<void> {
   if (!globalThis.__rims_prisma_seed_promise__) {
     globalThis.__rims_prisma_seed_promise__ = (async () => {
       const userCount = await prisma.user.count();
@@ -115,7 +121,7 @@ async function ensureSeeded(prisma: any): Promise<void> {
   await globalThis.__rims_prisma_seed_promise__;
 }
 
-async function withPrisma<T>(fn: (prisma: any) => Promise<T>): Promise<T | null> {
+async function withPrisma<T>(fn: (prisma: PrismaClient) => Promise<T>): Promise<T | null> {
   const prisma = await getClientOrNull();
   if (!prisma) {
     return null;
@@ -132,7 +138,7 @@ async function withPrisma<T>(fn: (prisma: any) => Promise<T>): Promise<T | null>
 }
 
 async function appendLog(
-  prisma: any,
+  prisma: PrismaClient,
   input: {
     user: string;
     action: ActivityAction;

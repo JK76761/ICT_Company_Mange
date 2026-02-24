@@ -1,6 +1,8 @@
+import type { PrismaClient } from "@prisma/client";
+
 declare global {
   // eslint-disable-next-line no-var
-  var __rims_prisma__: unknown | undefined;
+  var __rims_prisma__: PrismaClient | undefined;
   // eslint-disable-next-line no-var
   var __rims_prisma_unavailable__: boolean | undefined;
   // eslint-disable-next-line no-var
@@ -19,7 +21,7 @@ export function isDatabaseModeRequested(): boolean {
   return isPrismaEnabledByEnv();
 }
 
-export async function getPrismaClient(): Promise<any | null> {
+export async function getPrismaClient(): Promise<PrismaClient | null> {
   if (!isPrismaEnabledByEnv()) {
     return null;
   }
@@ -50,4 +52,3 @@ export async function getPrismaClient(): Promise<any | null> {
 
   return globalThis.__rims_prisma__ ?? null;
 }
-
