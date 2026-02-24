@@ -88,8 +88,15 @@ function getState(): StoreState {
 }
 
 function sanitizeUser(user: StoredUser): PublicUser {
-  const { password: _password, ...publicUser } = user;
-  return publicUser;
+  return {
+    id: user.id,
+    username: user.username,
+    name: user.name,
+    role: user.role,
+    status: user.status,
+    createdAt: user.createdAt,
+    lastLoginAt: user.lastLoginAt
+  };
 }
 
 function appendLog(input: {
@@ -323,4 +330,3 @@ export function deleteUserAccount(
 
   return { success: true };
 }
-
