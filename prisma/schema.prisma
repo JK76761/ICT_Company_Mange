@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum ActivityAction {
+  LOGIN_SUCCESS
+  CREATE_USER
+  DELETE_USER
+  UPDATE_ROLE
+  LOGOUT
+}
+
+model User {
+  id          String     @id @default(cuid())
+  username    String     @unique
+  name        String
+  password    String
+  role        UserRole   @default(STAFF)
+  status      UserStatus @default(ACTIVE)
+  createdAt   DateTime   @default(now())
+  lastLoginAt DateTime?
+
+  @@index([role])
+  @@index([status])
+}
+
+model ActivityLog {
+  id        String         @id @default(cuid())
+  user      String
+  action    ActivityAction
+  target    String?
+  timestamp DateTime       @default(now())
+  details   String
+
+  @@index([timestamp])
+  @@index([user])
+  @@index([action])
+}
+
