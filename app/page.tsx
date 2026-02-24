@@ -30,7 +30,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               RIMS MVP
             </p>
             <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-              Regional IT Management System
+              Regional IT Management System by JoshKim
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-ink/75 sm:text-base">
               Internal IT support simulation platform for user administration, role-based
